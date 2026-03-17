@@ -14,6 +14,8 @@ Alle Inhalte aus Moodle sollen lokal in diesem Projekt abgelegt werden, damit wi
   - `Notes`
 - In jedem Fachordner gibt es zusaetzlich eine Datei:
   - `DB.md`
+- Im Projektwurzelordner gibt es zusaetzlich eine zentrale Datei:
+  - `README.md`
 
 ## Bedeutung der Ordner
 
@@ -79,6 +81,23 @@ Regeln fuer `DB.md`:
 - Kurz, klar und uebersichtlich schreiben.
 - Bereits erledigte Punkte als erledigt markieren oder sauber in einen passenden Abschnitt verschieben, statt die Datei unstrukturiert wachsen zu lassen.
 
+### `README.md`
+
+Die `README.md` im Projektwurzelordner ist die zentrale Start- und Uebersichtsdatei fuer das gesamte Studien-Repository.
+
+Sie soll kompakt enthalten:
+
+- eine Liste aller Faecher im Repository
+- die Grundstruktur des Projekts
+- kurze, wichtige Ueberblicksinformationen aus den jeweiligen `DB.md`-Dateien
+
+Regeln fuer `README.md`:
+
+- Wenn neue Faecher hinzukommen, `README.md` aktualisieren.
+- Wenn sich wichtige fachliche Informationen in einer `DB.md` aendern, die zentrale Uebersicht in `README.md` mitaktualisieren.
+- `README.md` dient als Schnellueberblick und ersetzt nicht die detaillierten `DB.md`-Dateien in den Fachordnern.
+- Nur die wichtigsten Punkte aus `DB.md` in komprimierter Form uebernehmen.
+
 ## Umgang mit PDFs
 
 - Jedes PDF soll zusaetzlich als Markdown-Datei mit demselben Namen vorliegen.
@@ -118,6 +137,7 @@ cat path-to-file.pdf | markitdown
 - Die bestehende Fachstruktur beibehalten und nicht ohne Grund umorganisieren.
 - Neue Dateien so benennen, dass die Zuordnung zu Fach, Thema und Quelle klar bleibt.
 - Pro Fach `DB.md` als ersten Ueberblickspunkt fuer Aufgaben, Termine und wichtige Hinweise nutzen.
+- `README.md` als zentrale Projektuebersicht nutzen und bei relevanten Aenderungen mitpflegen.
 - Bei Materialien in `Moodle` beachten, dass zusammengehoerige Dateien ueber mehrere Einheitenordner verteilt sein koennen.
 - MP4-Dateien als grosse Originalmedien behandeln und nicht fuer Git-Tracking vorsehen.
 
@@ -165,4 +185,5 @@ Bei einem `Sync` fuer ein Fach soll der Assistent moeglichst effizient in dieser
 3. Eigene Ausarbeitungen in `Notes` ablegen.
 4. Wenn vorhanden, mit den Markdown-Ableitungen von PDF und Video arbeiten.
 5. `DB.md` pro Fach als laufende Uebersicht pflegen.
-6. Inhalte so strukturieren, dass gemeinsames Lernen und Weiterarbeiten einfach moeglich ist.
+6. `README.md` als zentrale Faecher- und Statusuebersicht aktuell halten.
+7. Inhalte so strukturieren, dass gemeinsames Lernen und Weiterarbeiten einfach moeglich ist.
