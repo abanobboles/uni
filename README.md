@@ -22,14 +22,21 @@ Jeder Fachordner soll diese Struktur haben:
 
 ### `Theologie Altes Testament IIa. Geboren werden, lieben, leiden, sterben. Lebensphasen im Alten Testament`
 
-- `DB.md` ist aktuell noch nicht angelegt.
-- Sobald eine `DB.md` existiert, sollen hier die wichtigsten Punkte knapp gespiegelt werden.
-- Besonders relevant sind:
-  - offene Hausaufgaben
-  - Abgaben und Fristen
-  - Pruefungstermine
-  - wichtige organisatorische Hinweise
-  - besondere Lernhinweise oder offene Punkte
+- Letzter Sync: `2026-03-17`
+- Im Fach wurden 23 fehlende PDF-zu-Markdown-Konvertierungen erzeugt.
+- Vorlesungszeit IIa: `18.2.2026-1.4.2026`
+- Vorlesungszeit IIb: `15.4.2026-27.5.2026`
+- Sondertermin: `11.3.2026`, online und asynchron
+- Pruefung: muendlich, `20 Minuten`
+- Pruefungsstoff: Vorlesungsstoff und Pflichtlektuere
+- Fuer die Pruefung sind `7 Thesen` erforderlich.
+- Abgabe der Thesen: als PDF-Mailanhang an `sigrid.eder@unifr.ch`
+- Frist fuer die Thesen: `24 Stunden vor der Pruefung im Dezember` oder `48 Stunden vor der Pruefung im Februar`
+- Aktuell relevante Arbeitsauftraege:
+  - asynchrone Online-Einheit vom `11.3.2026` durcharbeiten
+  - Unterlagen zu Liebe, Koerper und Homosexualitaet lesen
+- Offener technischer Punkt:
+  - mehrere mit `markitdown` erzeugte Markdown-Dateien sind leer und muessen spaeter geprueft werden
 
 ## Pflege der README
 
