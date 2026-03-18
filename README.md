@@ -56,6 +56,7 @@ Jeder Fachordner soll diese Struktur haben:
 - Fachordner: `Geschichte_der_Alten_Kirche`
 - Letzter Sync: `2026-03-18`
 - Im Fach wurden `13` PDF-zu-Markdown-Konvertierungen erstellt bzw. vervollstaendigt.
+- In `Notes` liegen jetzt detaillierte Pruefungsnotizen fuer die Themenordner `03-10`.
 - Sync-Ignore: `Moodle/02_Weiterfuehrende Literatur` wird bei normalen Syncs und Standard-Inhaltsarbeit ignoriert.
 - Pruefung: muendlich, ca. `15 Minuten`, in Praesenz innerhalb der offiziellen Pruefungswochen.
 - Geplanter Pruefungstermin laut Themenueberblick: `3.6.2026`
