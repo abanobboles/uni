@@ -54,7 +54,14 @@ Jeder Fachordner soll diese Struktur haben:
 ### `T01.00937 Geschichte der Alten Kirche. 4.-8. Jahrhundert. Hauptvorlesung [FS-2026]`
 
 - Fachordner: `Geschichte_der_Alten_Kirche`
-- Status: Neu angelegt, noch keine Dokumente synchronisiert.
+- Letzter Sync: `2026-03-18`
+- Im Fach wurden `13` PDF-zu-Markdown-Konvertierungen erstellt bzw. vervollstaendigt.
+- Sync-Ignore: `Moodle/02_Weiterfuehrende Literatur` wird bei normalen Syncs und Standard-Inhaltsarbeit ignoriert.
+- Pruefung: muendlich, ca. `15 Minuten`, in Praesenz innerhalb der offiziellen Pruefungswochen.
+- Geplanter Pruefungstermin laut Themenueberblick: `3.6.2026`
+- Moodle-Einschreibung: ca. `4 Wochen` vor dem Pruefungstermin.
+- Pruefungsstoff: Vorlesungsthemen gemaess Themenueberblick sowie Pflicht- und Vertiefungstexte.
+- Online-Studium ist moeglich; Anmeldung direkt per Mail an `gregor.emmenegger@unifr.ch`.
 
 ## Pflege der README
 

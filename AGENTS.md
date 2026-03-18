@@ -80,6 +80,23 @@ Regeln fuer `DB.md`:
 - Nur fachbezogene und nuetzliche Arbeitsinformationen eintragen.
 - Kurz, klar und uebersichtlich schreiben.
 - Bereits erledigte Punkte als erledigt markieren oder sauber in einen passenden Abschnitt verschieben, statt die Datei unstrukturiert wachsen zu lassen.
+- Wenn es fachbezogene Ordner gibt, die standardmaessig nicht bearbeitet werden sollen, diese in `DB.md` in einem eigenen Abschnitt `Ignorierte Ordner` fuehren.
+
+### `Ignorierte Ordner` in `DB.md`
+
+Ein Fach kann in seiner `DB.md` einen Abschnitt `Ignorierte Ordner` enthalten.
+
+Regeln dafuer:
+
+- Alle dort gelisteten Ordner sind standardmaessig von `Sync`-Laeufen ausgeschlossen.
+- Diese Ordner werden auch bei normalen inhaltlichen Arbeiten nicht beruecksichtigt, zum Beispiel bei:
+  - Zusammenfassungen
+  - Lernnotizen
+  - Aufgabenpruefung
+  - Termin- und Fristenextraktion
+  - allgemeinen inhaltlichen Rueckfragen zum Fach
+- Dateien in solchen Ordnern sollen nur dann einbezogen werden, wenn der Nutzer den Ordner oder konkrete Dateien daraus ausdruecklich nennt oder ihre Einbeziehung klar wuenscht.
+- Bei `Sync` bedeutet das: Diese Ordner werden standardmaessig weder inhaltlich durchgegangen noch fuer PDF-zu-Markdown-Konvertierungen oder To-do-Extraktionen priorisiert.
 
 ### `README.md`
 
@@ -113,7 +130,7 @@ Verwendung:
 
 ```bash
 markitdown path-to-file.pdf > document.md
-markitdown path-to-file.pdf -o document.md
+markitdown path-to-file.pdf > document.md
 cat path-to-file.pdf | markitdown
 ```
 
@@ -137,6 +154,7 @@ cat path-to-file.pdf | markitdown
 - Die bestehende Fachstruktur beibehalten und nicht ohne Grund umorganisieren.
 - Neue Dateien so benennen, dass die Zuordnung zu Fach, Thema und Quelle klar bleibt.
 - Pro Fach `DB.md` als ersten Ueberblickspunkt fuer Aufgaben, Termine und wichtige Hinweise nutzen.
+- Pro Fach auch einen moeglichen Abschnitt `Ignorierte Ordner` in `DB.md` beachten und diese Ordner standardmaessig auslassen.
 - `README.md` als zentrale Projektuebersicht nutzen und bei relevanten Aenderungen mitpflegen.
 - Bei Materialien in `Moodle` beachten, dass zusammengehoerige Dateien ueber mehrere Einheitenordner verteilt sein koennen.
 - MP4-Dateien als grosse Originalmedien behandeln und nicht fuer Git-Tracking vorsehen.
@@ -156,17 +174,19 @@ Bei einem `Sync` fuer ein Fach soll der Assistent moeglichst effizient in dieser
 
 1. Das angegebene Fach identifizieren.
 2. Sicherstellen, dass im Fach eine `DB.md` existiert; falls nicht, eine anlegen.
-3. Den Fachordner durchsuchen und alle PDF-Dateien finden, fuer die noch keine gleichnamige `.md`-Datei existiert.
-4. Diese fehlenden Markdown-Dateien mit `markitdown` erzeugen.
-5. Danach die vorhandenen fachbezogenen Markdown-Dateien durchgehen, insbesondere die aus PDF-Konvertierungen und Video-Transkriptionen.
-6. Pruefen, ob darin Hinweise auf Hausaufgaben, Abgaben, Fristen, Pruefungen oder wichtige To-dos enthalten sind.
-7. Relevante Ergebnisse strukturiert in `DB.md` eintragen oder aktualisieren.
+3. `DB.md` auf einen Abschnitt `Ignorierte Ordner` pruefen und diese Ordner fuer den aktuellen `Sync` standardmaessig ausschliessen.
+4. Den verbleibenden Fachordner durchsuchen und alle PDF-Dateien finden, fuer die noch keine gleichnamige `.md`-Datei existiert.
+5. Diese fehlenden Markdown-Dateien mit `markitdown` erzeugen.
+6. Danach die vorhandenen fachbezogenen Markdown-Dateien durchgehen, insbesondere die aus PDF-Konvertierungen und Video-Transkriptionen.
+7. Pruefen, ob darin Hinweise auf Hausaufgaben, Abgaben, Fristen, Pruefungen oder wichtige To-dos enthalten sind.
+8. Relevante Ergebnisse strukturiert in `DB.md` eintragen oder aktualisieren.
 
 ### Performance-Regeln fuer `Sync`
 
 - Zuerst ueber Dateinamen und vorhandene Markdown-Ableitungen arbeiten, bevor Inhalte gelesen werden.
 - PDFs nicht direkt inhaltlich lesen, wenn stattdessen eine Markdown-Konvertierung erstellt werden kann.
 - Fuer die inhaltliche Pruefung bevorzugt nur die vorhandenen `.md`-Dateien verwenden.
+- Ordner aus der `Ignorierte Ordner`-Liste eines Fachs standardmaessig komplett aus dem Sync-Arbeitslauf ausschliessen.
 - Nur das Fach bearbeiten, das beim `Sync` angefordert wurde, nicht das gesamte Repository.
 - `DB.md` als zentrale Uebersicht aktuell halten, damit kuenftige Chats schneller und konsistenter arbeiten koennen.
 

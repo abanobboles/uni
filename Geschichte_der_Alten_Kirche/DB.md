@@ -2,15 +2,34 @@
 
 ## Uebersicht
 - Departement fuer Patristik und Kirchengeschichte
+- Letzter Sync: 2026-03-18
+- 13 PDF-zu-Markdown-Konvertierungen im Fachordner erstellt bzw. vervollstaendigt
+
+## Ignorierte Ordner
+- Moodle/02_Weiterfuehrende Literatur
+- Dieser Ordner wird bei normalen Syncs sowie bei Zusammenfassungen, Notizen und sonstiger Standard-Inhaltsarbeit ignoriert.
+- Nur beruecksichtigen, wenn der Nutzer den Ordner oder konkrete Dateien daraus ausdruecklich einbezieht.
 
 ## Offene Hausaufgaben / Aufgaben
 - Keine aktuell bekannt
+- Fuer rein online Teilnehmende sind die Selbstevaluationen pro Thema verpflichtend, bevor ein neues Thema begonnen wird
 
 ## Termine / Fristen
-- Keine aktuell bekannt
+- Pruefungen laut Themenueberblick: 2026-06-03
+- Einschreibeliste in Moodle: ca. 4 Wochen vor dem Pruefungstermin
+- Attest bei Nichterscheinen: spaetestens 5 Werktage nach dem Pruefungstermin im Dekanat einreichen
 
 ## Wichtige organisatorische Hinweise
-- Keine aktuell bekannt
+- Pruefung: muendlich, ca. 15 Minuten, in Praesenz innerhalb der offiziellen Pruefungswochen
+- Ablauf: 2 Themen werden gezogen, 1 Thema wird gewaehlt, 1-2 Minuten Sammlung, 3-4 Minuten Darstellung, danach Pruefungsgespraech
+- Hilfsmittel sind in der Pruefung nicht gestattet
+- Mindestens 10 Minuten vor Pruefungsbeginn erscheinen und Studierendenausweis mitbringen
+- Online-Studium ist moeglich; Anmeldung direkt per Mail an gregor.emmenegger@unifr.ch
 
 ## Laufende Zusammenfassung
-- Initiale Anlage des Fachs.
+- Sync am 2026-03-18 abgeschlossen.
+- Relevante Markdown-Dateien fuer Handouts und Literatur liegen nun im Fachordner vor.
+- Der Ordner `02_Weiterfuehrende Literatur` ist ab jetzt als ignorierter Ordner fuer normale Syncs und Standard-Inhaltsarbeit markiert.
+- Pruefungsstoff: saemtliche in der Vorlesung behandelten Themen gemaess Themenueberblick sowie Pflicht- und Vertiefungstexte.
+- Empfohlene Literatur ist pruefungsrelevant im Sinn eines vertieften Verstaendnisses.
+- Zu den Vorlesungseinheiten liegen Podcasts, Handouts und meist unbenotete Selbstevaluationen in Moodle vor.
