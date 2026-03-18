@@ -9,6 +9,9 @@ Die Materialien aus den einzelnen Faecherordnern sollen hier so organisiert sein
 ## Faecheruebersicht
 
 1. `Theologie Altes Testament IIa. Geboren werden, lieben, leiden, sterben. Lebensphasen im Alten Testament`
+2. `Biblische Umwelt AT. Die Kulturen der antiken Levante und ihrer Nachbarn in Texten und Bildern. Hauptvorlesung [FS-2026]`
+3. `Einfuehrung in das Alte Testament IV: Weisheitsbuecher. Hauptvorlesung. [FS-2026]`
+4. `T01.00937 Geschichte der Alten Kirche. 4.-8. Jahrhundert. Hauptvorlesung [FS-2026]`
 
 ## Struktur pro Fach
 
@@ -37,6 +40,21 @@ Jeder Fachordner soll diese Struktur haben:
   - Unterlagen zu Liebe, Koerper und Homosexualitaet lesen
 - Offener technischer Punkt:
   - mehrere mit `markitdown` erzeugte Markdown-Dateien sind leer und muessen spaeter geprueft werden
+
+### `Biblische Umwelt AT. Die Kulturen der antiken Levante und ihrer Nachbarn in Texten und Bildern. Hauptvorlesung [FS-2026]`
+
+- Fachordner: `Biblische_Umwelt_AT`
+- Status: Neu angelegt, noch keine Dokumente synchronisiert.
+
+### `Einfuehrung in das Alte Testament IV: Weisheitsbuecher. Hauptvorlesung. [FS-2026]`
+
+- Fachordner: `Einfuehrung_AT_IV`
+- Status: Neu angelegt, noch keine Dokumente synchronisiert.
+
+### `T01.00937 Geschichte der Alten Kirche. 4.-8. Jahrhundert. Hauptvorlesung [FS-2026]`
+
+- Fachordner: `Geschichte_der_Alten_Kirche`
+- Status: Neu angelegt, noch keine Dokumente synchronisiert.
 
 ## Pflege der README
 
