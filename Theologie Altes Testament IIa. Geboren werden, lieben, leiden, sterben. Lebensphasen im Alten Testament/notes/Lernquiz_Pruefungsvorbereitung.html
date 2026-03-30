@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernquiz Theologie des Alten Testaments IIa</title>
+  <style>
+    :root {
+      --paper: #f5ecda;
+      --paper-deep: #e8d7b8;
+      --ink: #24180e;
+      --muted: #6a5642;
+      --accent: #8a3b12;
+      --accent-soft: #cf8d5b;
+      --olive: #576347;
+      --olive-soft: #97a180;
+      --line: rgba(36, 24, 14, 0.13);
+      --card: rgba(255, 251, 241, 0.88);
+      --success: #1f6b45;
+      --danger: #8c2d21;
+      --shadow: 0 24px 60px rgba(42, 22, 6, 0.18);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(207, 141, 91, 0.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(87, 99, 71, 0.18), transparent 28%),
+        linear-gradient(180deg, #d8c2a0 0%, #f3e7cf 42%, #efe0c1 100%);
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(88, 57, 19, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(88, 57, 19, 0.02) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mix-blend-mode: multiply;
+      opacity: 0.45;
+    }
+
+    .page {
+      width: min(1240px, calc(100% - 32px));
+      margin: 24px auto 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      border: 1px solid rgba(36, 24, 14, 0.15);
+      border-radius: calc(var(--radius) + 8px);
+      padding: 28px;
+      background:
+        linear-gradient(135deg, rgba(255, 249, 237, 0.92), rgba(241, 228, 197, 0.94)),
+        linear-gradient(135deg, rgba(138, 59, 18, 0.05), transparent 45%);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "AT IIa";
+      position: absolute;
+      right: 18px;
+      top: 10px;
+      font-family: Baskerville, "Times New Roman", serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      color: rgba(138, 59, 18, 0.08);
+      letter-spacing: 0.08em;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      font-family: Baskerville, "Palatino Linotype", serif;
+      font-size: clamp(2.2rem, 5vw, 4.4rem);
+      line-height: 0.95;
+      font-weight: 700;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.95fr);
+      gap: 24px;
+      margin-top: 20px;
+      align-items: start;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 760px;
+      font-size: 1.08rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .hero-panel,
+    .quiz-card,
+    .panel,
+    .result-card {
+      background: var(--card);
+      border: 1px solid rgba(36, 24, 14, 0.12);
+      border-radius: var(--radius);
+      box-shadow: 0 16px 40px rgba(42, 22, 6, 0.09);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-panel {
+      padding: 20px;
+    }
+
+    .hero-panel h2,
+    .panel h3,
+    .quiz-card h2,
+    .result-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-panel p,
+    .panel p,
+    .meta-line,
+    .feedback-note,
+    .result-card p,
+    .list-note,
+    .empty-state {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .badge-row,
+    .stat-row,
+    .mode-row,
+    .legend-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .badge,
+    .legend-item,
+    .score-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(138, 59, 18, 0.08);
+      border: 1px solid rgba(138, 59, 18, 0.14);
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+
+    .badge strong,
+    .score-chip strong {
+      font-size: 1rem;
+    }
+
+    .mode-row {
+      margin-top: 18px;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      transition: transform 150ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .mode-btn,
+    .action-btn,
+    .minor-btn {
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .mode-btn,
+    .action-btn {
+      background: linear-gradient(135deg, var(--accent), #a94a1d);
+      color: #fff7ef;
+      box-shadow: 0 14px 26px rgba(138, 59, 18, 0.22);
+    }
+
+    .minor-btn {
+      background: rgba(87, 99, 71, 0.1);
+      color: var(--ink);
+      border: 1px solid rgba(87, 99, 71, 0.14);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.8fr);
+      gap: 22px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .quiz-card {
+      padding: 24px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .progress-wrap {
+      margin: 18px 0 22px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(36, 24, 14, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--olive), var(--accent-soft));
+      transition: width 220ms ease;
+    }
+
+    .question-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .question-type {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .question-category {
+      font-size: 0.92rem;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(87, 99, 71, 0.08);
+    }
+
+    .question-prompt {
+      margin: 0 0 8px;
+      font-size: clamp(1.35rem, 2.5vw, 2.1rem);
+      line-height: 1.18;
+      font-family: Baskerville, "Palatino Linotype", serif;
+    }
+
+    .question-help {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(36, 24, 14, 0.12);
+      background: rgba(255, 252, 245, 0.88);
+      transition: border-color 180ms ease, transform 150ms ease, background 180ms ease;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: rgba(138, 59, 18, 0.32);
+    }
+
+    .option input {
+      margin-top: 3px;
+      accent-color: var(--accent);
+      transform: scale(1.2);
+    }
+
+    .option-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .option-text {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .match-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .match-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 0.7fr) auto minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(36, 24, 14, 0.12);
+      background: rgba(255, 252, 245, 0.88);
+    }
+
+    .match-left {
+      font-weight: 700;
+    }
+
+    .match-arrow {
+      color: var(--accent);
+      font-size: 1.1rem;
+      opacity: 0.75;
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid rgba(36, 24, 14, 0.15);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fffdf8;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .feedback {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(36, 24, 14, 0.12);
+      display: none;
+    }
+
+    .feedback.correct {
+      display: block;
+      background: rgba(31, 107, 69, 0.08);
+      border-color: rgba(31, 107, 69, 0.24);
+    }
+
+    .feedback.partial {
+      display: block;
+      background: rgba(138, 59, 18, 0.08);
+      border-color: rgba(138, 59, 18, 0.2);
+    }
+
+    .feedback.incorrect {
+      display: block;
+      background: rgba(140, 45, 33, 0.08);
+      border-color: rgba(140, 45, 33, 0.18);
+    }
+
+    .feedback h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .feedback ul,
+    .panel ul,
+    .result-card ul {
+      margin: 12px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .result-card {
+      padding: 24px;
+      margin-top: 24px;
+      display: none;
+    }
+
+    .result-card.visible {
+      display: block;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .score-tile {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 252, 245, 0.88);
+      border: 1px solid rgba(36, 24, 14, 0.12);
+    }
+
+    .score-tile strong {
+      display: block;
+      font-size: 1.8rem;
+      font-family: Baskerville, "Palatino Linotype", serif;
+      margin-top: 6px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        width: min(100% - 20px, 1240px);
+      }
+
+      .hero,
+      .quiz-card,
+      .panel,
+      .result-card {
+        padding: 18px;
+      }
+
+      .match-row {
+        grid-template-columns: 1fr;
+      }
+
+      .match-arrow {
+        display: none;
+      }
+
+      .score-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <p class="eyebrow">Pruefungstraining fuer ein Fach</p>
+      <h1>Theologie des Alten Testaments IIa als interaktives Lernquiz</h1>
+      <div class="hero-grid">
+        <div>
+          <p class="lead">
+            Diese Seite laeuft komplett lokal in einer einzigen HTML-Datei. Sie kombiniert Einzelwahl,
+            Mehrfachauswahl und Zuordnungsaufgaben, damit du nicht nur Begriffe wiedererkennst,
+            sondern Zusammenhaenge einpraegst. Ein Schwerpunkt liegt auf den hebräischen Organbegriffen,
+            ihren Funktionen und den grossen Linien der Vorlesung.
+          </p>
+          <div class="mode-row">
+            <button class="mode-btn" id="startFullBtn" type="button">Gesamtes Quiz starten</button>
+            <button class="minor-btn" id="startBodyBtn" type="button">Nur Koerpersymbolik intensiv</button>
+          </div>
+          <p class="footer-note">
+            Tipp: Im Intensivmodus werden nur die Fragen zu Organbegriffen, Koerpersymbolik und den zugehoerigen Funktionen geladen.
+          </p>
+        </div>
+        <aside class="hero-panel">
+          <h2>Was dieses Quiz abfragt</h2>
+          <div class="badge-row" id="heroStats"></div>
+          <div class="legend-row" style="margin-top: 16px;">
+            <span class="legend-item">Einzelwahl</span>
+            <span class="legend-item">Mehrfachauswahl</span>
+            <span class="legend-item">Zuordnung</span>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <div class="shell">
+      <main>
+        <section class="quiz-card hidden" id="quizCard">
+          <div class="progress-wrap">
+            <div class="progress-meta">
+              <div>
+                <div class="question-type" id="questionType"></div>
+                <p class="meta-line" id="questionCounter"></p>
+              </div>
+              <div class="score-chip"><span>Punkte bisher</span><strong id="scoreNow">0</strong></div>
+            </div>
+            <div class="progress-bar"><span id="progressBar"></span></div>
+          </div>
+
+          <div class="question-top">
+            <div>
+              <h2 class="question-prompt" id="questionPrompt"></h2>
+              <p class="question-help" id="questionHelp"></p>
+            </div>
+            <div class="question-category" id="questionCategory"></div>
+          </div>
+
+          <form id="answerForm"></form>
+
+          <div class="action-row">
+            <button class="action-btn" id="submitBtn" type="button">Antwort pruefen</button>
+            <button class="minor-btn hidden" id="nextBtn" type="button">Naechste Frage</button>
+          </div>
+
+          <div class="feedback" id="feedbackBox"></div>
+        </section>
+
+        <section class="result-card" id="resultCard">
+          <p class="eyebrow">Auswertung</p>
+          <h2 id="resultTitle">Durchgang abgeschlossen</h2>
+          <p id="resultSummary"></p>
+          <div class="score-grid">
+            <div class="score-tile">
+              Gesamtpunkte
+              <strong id="resultScore">0</strong>
+            </div>
+            <div class="score-tile">
+              Voll korrekt
+              <strong id="resultCorrectCount">0</strong>
+            </div>
+            <div class="score-tile">
+              Noch unsicher
+              <strong id="resultWrongCount">0</strong>
+            </div>
+          </div>
+          <div class="action-row">
+            <button class="action-btn" id="retryWrongBtn" type="button">Nur falsche Fragen wiederholen</button>
+            <button class="minor-btn" id="restartBtn" type="button">Neu mischen</button>
+          </div>
+          <ul id="resultFocusList"></ul>
+        </section>
+      </main>
+
+      <aside class="stack">
+        <section class="panel">
+          <h3>Abdeckung</h3>
+          <p>
+            Das Quiz streut die Fragen ueber Methodengeschichte, Kanon und Textproduktion, Schoepfung,
+            Lebensbegriff, Geburtsvorstellungen, Koerpersymbolik, Levitikus, Hohelied und Pruefungsrahmen.
+          </p>
+        </section>
+
+        <section class="panel">
+          <h3>Hebraeische Merkpunkte</h3>
+          <ul>
+            <li>Jad: Tun, Macht, Gewalt</li>
+            <li>Peh: Rede, Weisheit, Lob</li>
+            <li>Osaen: Horen, Gehorsam, Verstehen</li>
+            <li>Ain: Blickqualitaet, Dynamik, Liebesblick</li>
+            <li>Af / aph: Zorn, Geruch, Langmut bei langer Nase</li>
+            <li>Leb: Verstand, Erkenntnis, Entscheidung</li>
+            <li>Kiljah: tiefe Emotionen, Gewissen</li>
+            <li>Raechaem: Mutterschoss, Wurzel von rachamim</li>
+            <li>Dam: physische Lebenskraft</li>
+            <li>Azmot: Geruest, Stabilitaet, bei Zerfall Todessymbolik</li>
+            <li>Nefesch: Kehle, beduerftiges atmendes Ich</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h3>Spielregel</h3>
+          <p>
+            Bei Mehrfachauswahl gilt eine Antwort nur dann als voll korrekt, wenn alle richtigen Optionen und keine falsche gewaehlt wurden.
+            Bei Zuordnungen bekommst du Teilpunkte pro korrekt gesetzter Paarung.
+          </p>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const baseQuestions = [
+      {
+        id: "q1",
+        category: "Grundlagen",
+        type: "single",
+        prompt: "Wodurch verschiebt Martin Luther den Theologiebegriff in der Reformation?",
+        help: "Waehle die treffendste Zusammenfassung.",
+        options: [
+          "Von der Lehre ueber Engelchore zur Lehre ueber kirchliche Verwaltung.",
+          "Von der Lehre von Gott zur Lehre vom Verhaeltnis des Menschen zu Gott.",
+          "Von der Bibelexegese zur reinen Naturphilosophie.",
+          "Von der Geschichtsforschung zur mathematischen Wissenschaft."
+        ],
+        correct: 1,
+        explanation: "In der Zusammenfassung wird betont, dass Luther die Schrift ins Zentrum rueckt und Theologie als Lehre vom Verhaeltnis des Menschen zu Gott versteht."
+      },
+      {
+        id: "q2",
+        category: "Grundlagen",
+        type: "multi",
+        prompt: "Welche drei Arbeitsbereiche verbindet die Zusammenfassung mit Spinozas frueh historisch-kritischem Ansatz?",
+        help: "Mehrere Antworten sind richtig.",
+        options: [
+          "Genaue Erforschung der hebräischen Sprache.",
+          "Einbettung der biblischen Buecher in ihren historischen Hintergrund.",
+          "Beobachtung des Zusammenwachsens biblischer Traditionen im Kanon.",
+          "Dogmatische Harmonisierung aller Spannungen.",
+          "Beweisfuehrung fuer Wundergeschichten durch Naturwissenschaft."
+        ],
+        correct: [0, 1, 2],
+        explanation: "Spinoza wird hier als wichtiger Anstoss fuer Sprachstudium, historische Kontextualisierung und Kanonbeobachtung dargestellt, nicht fuer dogmatische Harmonisierung."
+      },
+      {
+        id: "q3",
+        category: "Grundlagen",
+        type: "single",
+        prompt: "Was ist laut Johann Philipp Gabler die biblische Theologie?",
+        help: "Achte auf die Unterscheidung zur Dogmatik.",
+        options: [
+          "Eine zeitlose dogmatische Lehre, die direkt fuer die Kirche formuliert wird.",
+          "Eine historische Disziplin, die untersucht, was die Schriftsteller der Vergangenheit dachten.",
+          "Eine rein liturgische Disziplin zur Ordnung des Gottesdienstes.",
+          "Eine Sammlung ausserbiblischer Paralleltexte."
+        ],
+        correct: 1,
+        explanation: "Gabler trennt biblische Theologie als historische Disziplin von der Dogmatik als zeitgemaesser theologischer Formulierung."
+      },
+      {
+        id: "q4",
+        category: "Grundlagen",
+        type: "single",
+        prompt: "Wer trennt die biblische Theologie weiter in eine Theologie des AT und eine Theologie des NT?",
+        help: "Es geht um die Aufspaltung der gesamtbiblischen Einheit.",
+        options: [
+          "Walter Eichrodt",
+          "Georg Lorenz Bauer",
+          "Brevard Childs",
+          "Julius Wellhausen"
+        ],
+        correct: 1,
+        explanation: "Die Zusammenfassung nennt Georg Lorenz Bauer als denjenigen, der die Trennung zwischen AT und NT theologisch zuspitzt."
+      },
+      {
+        id: "q5",
+        category: "Grundlagen",
+        type: "single",
+        prompt: "Wie versteht Gerhard von Rad das Alte Testament besonders?",
+        help: "Suche nach der Formulierung aus dem Skript.",
+        options: [
+          "Als rein juristische Gesetzessammlung.",
+          "Als naturwissenschaftliches Weltbild Israels.",
+          "Als Nacherzaehlung goettlichen Geschichtshandelns, also geglaubte Geschichte.",
+          "Als Sammlung von Mysterienkulten ohne historischen Bezug."
+        ],
+        correct: 2,
+        explanation: "Von Rad betont die erzaehlte und geglaubte Geschichte statt eines starren Lehrgebaeudes."
+      },
+      {
+        id: "q6",
+        category: "Grundlagen",
+        type: "single",
+        prompt: "Welche Formel trifft die Zusammenfassung fuer das Alte Testament am besten?",
+        help: "Es geht um die grundlegende literarische Charakterisierung.",
+        options: [
+          "Ein vollstaendig geschlossenes dogmatisches System.",
+          "Fortschreibungsliteratur, die Gotteserfahrungen immer neu reflektiert.",
+          "Spontane Volksreligiositaet ohne redaktionelle Arbeit.",
+          "Eine einheitliche Mitte ohne jede Pluralitaet."
+        ],
+        correct: 1,
+        explanation: "Die Zusammenfassung stellt das AT als Fortschreibungsliteratur dar, nicht als einheitliches Lehrsystem."
+      },
+      {
+        id: "q7",
+        category: "Kanon",
+        type: "single",
+        prompt: "Wie viele Buecher umfasst das katholische Alte Testament nach der Septuaginta?",
+        help: "Diese Zahl wird im Abschnitt ueber Kanon und Schriften genannt.",
+        options: [
+          "39",
+          "42",
+          "46",
+          "54"
+        ],
+        correct: 2,
+        explanation: "Im Skript wird die Zahl 46 genannt."
+      },
+      {
+        id: "q8",
+        category: "Kanon",
+        type: "multi",
+        prompt: "Welche Aussagen zur Literaturproduktion im antiken Israel sind laut Skript richtig?",
+        help: "Mehrere Antworten sind richtig.",
+        options: [
+          "Lesen und Schreiben waren kleinen Elitegruppen vorbehalten.",
+          "Texte wurden oft auf teurem Papyrus als Schriftrollen geschrieben.",
+          "Die Texte wurden als Unikate betrachtet und im Laufe der Zeit fortgeschrieben.",
+          "Das AT ist primaer spontane Volksreligiositaet ohne Redaktion.",
+          "Priester und professionelle Schreiber gehoerten zu den traegernden Milieus."
+        ],
+        correct: [0, 1, 2, 4],
+        explanation: "Genau diese Punkte nennt die Zusammenfassung. Falsch ist die Idee, das AT sei unmittelbare, unredigierte Volksreligiositaet."
+      },
+      {
+        id: "q9",
+        category: "Lebensbeginn",
+        type: "single",
+        prompt: "Was ist charakteristisch fuer das Verb bara?",
+        help: "Es geht um die Schoepfungsverben.",
+        options: [
+          "Es bezeichnet das Bauen eines Hauses und wird meist fuer Menschen verwendet.",
+          "Es ist ein Verb, dessen Subjekt im AT nur Gott ist und das Schoepfen von Grund auf meint.",
+          "Es beschreibt ausschliesslich Geburtsvorgaenge bei Frauen.",
+          "Es ist die Bezeichnung fuer das Schreiben von Psalmen."
+        ],
+        correct: 1,
+        explanation: "Bara wird im Skript als Gottesverb beschrieben, besonders fuer Gen 1."
+      },
+      {
+        id: "q10",
+        category: "Lebensbeginn",
+        type: "single",
+        prompt: "Wofuer steht yatsar in Gen 2?",
+        help: "Die Metapher ist handwerklich.",
+        options: [
+          "Fuer den priesterlichen Segen nach der Geburt.",
+          "Fuer das Formen oder Toepfern des Menschen aus Erde.",
+          "Fuer den Akt des Koenigs, den Tempel zu weihen.",
+          "Fuer den prophetischen Traum."
+        ],
+        correct: 1,
+        explanation: "Yatsar ist die Toepfermetapher: Gott formt den Menschen aus adama."
+      },
+      {
+        id: "q11",
+        category: "Lebensbeginn",
+        type: "multi",
+        prompt: "Welche drei Ebenen gehoeren laut Skript untrennbar zum relationalen Lebensverstaendnis des AT?",
+        help: "Mehrere Antworten sind richtig.",
+        options: [
+          "Die transzendente Ebene der Gottesbeziehung.",
+          "Die soziale Ebene der Einbindung in Generation und Gemeinschaft.",
+          "Die koerperliche Ebene des Leibes als Ort der Wahrnehmung und Beziehung.",
+          "Die rein individualistische Selbstverwirklichung.",
+          "Die kapitaloekonomische Leistungsebene."
+        ],
+        correct: [0, 1, 2],
+        explanation: "Das Skript nennt gerade die Gottesbeziehung, die soziale Eingebundenheit und die koerperliche Dimension."
+      },
+      {
+        id: "q12",
+        category: "Lebensbeginn",
+        type: "single",
+        prompt: "Was meint nefesch im Skript zuerst?",
+        help: "Achte auf den Unterschied zwischen moderner Seele und hebräischem Begriff.",
+        options: [
+          "Eine vom Koerper getrennte unsterbliche Substanz.",
+          "Kehle oder Hals und damit das beduerftige, atmende, vitale Ich.",
+          "Nur das Blut im kultischen Sinn.",
+          "Ausschliesslich den Ort rationalen Denkens."
+        ],
+        correct: 1,
+        explanation: "Der Mensch hat im hebräischen Denken nicht einfach eine Seele, sondern ist nefesch."
+      },
+      {
+        id: "q13",
+        category: "Geburt",
+        type: "single",
+        prompt: "Wofuer steht jalad im Zusammenhang mit Geburt?",
+        help: "Der Begriff ist weiter als ein einzelner Moment.",
+        options: [
+          "Nur fuer das Abstillen.",
+          "Fuer den gesamten Prozess von Zeugung ueber Schwangerschaft bis Geburt und Abstillen.",
+          "Nur fuer das Benennen eines Kindes.",
+          "Nur fuer den Wehklageruf bei Trauer."
+        ],
+        correct: 1,
+        explanation: "Jalad deckt im Skript den ganzen Bereich des Zeugens und Gebaerens ab."
+      },
+      {
+        id: "q14",
+        category: "Geburt",
+        type: "multi",
+        prompt: "Welche Aufgaben werden der me-jaledet, also der Hebamme, zugeschrieben?",
+        help: "Mehrere Antworten sind richtig.",
+        options: [
+          "Beistand bei der Geburt leisten.",
+          "Das Geschlecht des Kindes feststellen.",
+          "Das Neugeborene versorgen, waschen, mit Salz abreiben und wickeln.",
+          "Als Tempelpriesterin das Opfer auf dem Altar vollziehen.",
+          "Hohes Ansehen geniessen, wie das Beispiel Schifra und Pua zeigt."
+        ],
+        correct: [0, 1, 2, 4],
+        explanation: "Die Hebamme ist im Skript eine hoch angesehene Geburtshelferin mit klaren Versorgungsaufgaben, nicht eine Tempelpriesterin."
+      },
+      {
+        id: "q15",
+        category: "Koerpersymbolik",
+        type: "match",
+        prompt: "Ordne die hebräischen Begriffe den passenden Bedeutungsfeldern zu.",
+        help: "Hier zaehlen Teilpunkte pro richtiger Zuordnung.",
+        pairs: [
+          { left: "Jad", right: "Tun, Macht, Gewalt" },
+          { left: "Peh", right: "Rede, Weisheit, Lob" },
+          { left: "Osaen", right: "Horen, Verstehen, Gehorsam" },
+          { left: "Ain", right: "Qualitaet und Dynamik des Blickes" }
+        ],
+        choices: [
+          "Mutterschoss und Wurzel von Barmherzigkeit",
+          "Horen, Verstehen, Gehorsam",
+          "Tun, Macht, Gewalt",
+          "Rede, Weisheit, Lob",
+          "Physische Lebenskraft",
+          "Qualitaet und Dynamik des Blickes"
+        ],
+        explanation: "Die ersten vier Organbilder decken Handeln, Sprechen, Horen und Blickqualitaet ab. Gerade hier zeigt sich, dass der hebräische Koerper funktional-symbolisch gelesen wird."
+      },
+      {
+        id: "q16",
+        category: "Koerpersymbolik",
+        type: "match",
+        prompt: "Noch einmal Zuordnung: Welche Organbegriffe gehoeren zu welchen Schwerpunkten?",
+        help: "Auch hier gibt es Teilpunkte pro richtiger Zeile.",
+        pairs: [
+          { left: "Af / aph", right: "Zorn und Langmut" },
+          { left: "Leb", right: "Verstand, Einsicht, Entscheidung" },
+          { left: "Kiljah", right: "Tiefe Emotionen und Gewissen" },
+          { left: "Raechaem", right: "Mutterschoss als Wurzel von rachamim" }
+        ],
+        choices: [
+          "Verstand, Einsicht, Entscheidung",
+          "Tiefe Emotionen und Gewissen",
+          "Zorn und Langmut",
+          "Mutterschoss als Wurzel von rachamim",
+          "Geruest und Halt der Person",
+          "Rede und Lob"
+        ],
+        explanation: "Besonders wichtig ist hier der Bruch mit modernen Intuitionen: Das Herz ist nicht primaer Gefuehl, die Nieren sind nicht bloss ein biologisches Organ, und raechaem erschliesst Gottes Erbarmen."
+      },
+      {
+        id: "q17",
+        category: "Koerpersymbolik",
+        type: "match",
+        prompt: "Ordne auch die letzten drei zentralen Begriffe zu.",
+        help: "Diese Aufgabe ist kurz, aber pruefungsnah.",
+        pairs: [
+          { left: "Dam", right: "Sitz der physischen Lebenskraft" },
+          { left: "Azmot", right: "Geruest, Halt, bei Aufloesung Todesschwelle" },
+          { left: "Nefesch", right: "Kehle und vitales beduerftiges Ich" }
+        ],
+        choices: [
+          "Kehle und vitales beduerftiges Ich",
+          "Geruest, Halt, bei Aufloesung Todesschwelle",
+          "Sitz der physischen Lebenskraft",
+          "Weisheitliches Sprechen",
+          "Mutterschoss als Wurzel von Erbarmen"
+        ],
+        explanation: "Dam, azmot und nefesch markieren im Skript Lebenskraft, Stabilitaet und elementare Vitalitaet."
+      },
+      {
+        id: "q18",
+        category: "Koerpersymbolik",
+        type: "multi",
+        prompt: "Welche Aussagen charakterisieren die Koerpersymbolik des AT laut Zusammenfassung?",
+        help: "Mehrere Antworten sind richtig.",
+        options: [
+          "Es gibt keinen abstrakten hebräischen Begriff fuer Koerper wie in moderner Anatomie.",
+          "Koerperteile stehen oft fuer den ganzen Menschen unter einem bestimmten Aspekt.",
+          "Organ und Funktion sind im AT streng getrennt.",
+          "Der Koerper ist auch sozial-kulturell konstruiert.",
+          "Die hebräischen Texte denken den Menschen als radikale Trennung von Geist und Leib."
+        ],
+        correct: [0, 1, 3],
+        explanation: "Das Skript betont gerade das Gegenteil einer harten Trennung zwischen Organ und Funktion oder zwischen Geist und Leib."
+      },
+      {
+        id: "q19",
+        category: "Koerpersymbolik",
+        type: "single",
+        prompt: "Wofuer steht leb im Alten Testament in erster Linie?",
+        help: "Diese Frage wirkt vertraut und ist genau deshalb pruefungsfaehig.",
+        options: [
+          "Vor allem fuer romantische Gefuehle.",
+          "Vor allem fuer Verstand, Erkenntnis, Einsicht und Entschlusskraft.",
+          "Nur fuer den Blutkreislauf.",
+          "Nur fuer den Tempelkult."
+        ],
+        correct: 1,
+        explanation: "Ein klassischer Lernpunkt: Das Herz ist im Skript der Ort von Vernunft und Entscheidung, nicht primaer von Gefuehlen."
+      },
+      {
+        id: "q20",
+        category: "Koerpersymbolik",
+        type: "single",
+        prompt: "Welcher Begriff ist im Skript Sitz der tiefsten Emotionen und des Gewissens?",
+        help: "Hier geht es um das Gegenbild zum modernen Gefuehlsherz.",
+        options: [
+          "Kiljah",
+          "Jad",
+          "Dam",
+          "Ain"
+        ],
+        correct: 0,
+        explanation: "Kiljah, die Nieren, stehen fuer die tief verborgene innere Regung und das Gewissen."
+      },
+      {
+        id: "q21",
+        category: "Koerpersymbolik",
+        type: "single",
+        prompt: "Warum ist raechaem fuer das Gottesbild theologisch so aufschlussreich?",
+        help: "Die Antwort verbindet Sprachwurzel und Gotteserfahrung.",
+        options: [
+          "Weil das Wort die Grundlage fuer Koenigsherrschaft bildet.",
+          "Weil daraus die Wurzel von rachamim stammt und Gottes Erbarmen mit Mutterschoss-Metaphorik verbunden ist.",
+          "Weil es einfach ein anderes Wort fuer Opferaltar ist.",
+          "Weil damit der hebräische Begriff fuer Gesetzestafel gemeint ist."
+        ],
+        correct: 1,
+        explanation: "Gerade dieser Zusammenhang zeigt, warum Gottes Barmherzigkeit im Skript eine muetterlich-waermende Dimension bekommt."
+      },
+      {
+        id: "q22",
+        category: "Koerpersymbolik",
+        type: "single",
+        prompt: "Was bedeutet es im hebräischen Bildfeld, eine lange Nase zu haben?",
+        help: "Gemeint ist nicht das Aussehen, sondern eine Affektqualitaet.",
+        options: [
+          "Uebersteigerten Hochmut.",
+          "Langmut oder Geduld.",
+          "Scharfen Geruchssinn im Kult.",
+          "Priesterliche Reinheit."
+        ],
+        correct: 1,
+        explanation: "Af / aph verbindet Zorn und Langmut. Die lange Nase steht fuer Geduld."
+      },
+      {
+        id: "q23",
+        category: "Levitikus",
+        type: "single",
+        prompt: "Warum waere es laut Skript anachronistisch, Lev 18,22 oder Lev 20,13 direkt als Verbot moderner Homosexualitaet zu lesen?",
+        help: "Der Kernpunkt ist begriffsgeschichtlich.",
+        options: [
+          "Weil Levitikus gar keine Sexualitaet behandelt.",
+          "Weil das moderne Konzept von Homosexualitaet als Identitaet und dauerhafte Liebesbeziehung der Antike unbekannt war.",
+          "Weil alle levitischen Texte erst im Mittelalter entstanden sind.",
+          "Weil das Alte Testament nur weibliche Beziehungen beschreibt."
+        ],
+        correct: 1,
+        explanation: "Die Zusammenfassung unterscheidet scharf zwischen modernen Identitaetskonzepten und antiken Aussagen zu bestimmten Akten."
+      },
+      {
+        id: "q24",
+        category: "Levitikus",
+        type: "multi",
+        prompt: "Welche Gruende nennt die Zusammenfassung fuer die Verurteilung des Aktes in Levitikus?",
+        help: "Mehrere Antworten sind richtig.",
+        options: [
+          "Samen wird verschwendet, also keine Nachkommenschaft erzeugt.",
+          "Die priesterliche Ordnung der Geschlechter wird als verletzt verstanden.",
+          "Ein Mann nimmt die als demuetigend bewertete passive Frauenrolle ein.",
+          "Levitikus will romantische Liebe zwischen Gleichberechtigten moralisch verdammen.",
+          "Die kleine Gemeinde in Jehud war auf Nachkommenschaft angewiesen."
+        ],
+        correct: [0, 1, 2, 4],
+        explanation: "Das Skript argumentiert ueber Fortpflanzung, Ordnungstheologie und patriarchale Rollenlogik, nicht ueber moderne gleichberechtigte Partnerschaften."
+      },
+      {
+        id: "q25",
+        category: "Levitikus",
+        type: "single",
+        prompt: "In welchem historischen Kontext verortet das Skript die levitischen Verbote?",
+        help: "Es geht um die politische Lage der Gemeinschaft.",
+        options: [
+          "Im hellenistischen Alexandria mit missionarischer Mehrheitskirche.",
+          "In der nachexilischen persischen Provinz Jehud als kleine bedrohte Gemeinschaft.",
+          "Im fruehneuzeitlichen Europa nach der Reformation.",
+          "Im eisenzeitlichen Rom."
+        ],
+        correct: 1,
+        explanation: "Genannt wird die nachexilische Provinz Jehud, deren Identitaet und Fortbestand als fragil erscheinen."
+      },
+      {
+        id: "q26",
+        category: "Levitikus",
+        type: "single",
+        prompt: "Wie deutet die Zusammenfassung die Todesdrohung in Lev 20,13?",
+        help: "Achte auf den Ausdruck passivum divinum.",
+        options: [
+          "Als direkte juristische Hinrichtungsanweisung an jede Glaubensgemeinschaft.",
+          "Als blossen Uebersetzungsfehler ohne theologischen Gehalt.",
+          "Als goettliches Passiv: keine menschliche Vollstreckungsanweisung, sondern theologische Strafandrohung.",
+          "Als Symbol fuer das Ende des Tempelkults."
+        ],
+        correct: 2,
+        explanation: "Im Skript wird ausdruecklich gesagt, dass nicht Menschen zur Toetung aufgefordert werden, sondern Gottes Gericht angedroht wird."
+      },
+      {
+        id: "q27",
+        category: "Hohelied",
+        type: "multi",
+        prompt: "Welche Aussagen ueber das Hohelied passen laut Zusammenfassung?",
+        help: "Mehrere Antworten sind richtig.",
+        options: [
+          "Es feiert Erotik und Lust stark positiv.",
+          "Ehe und Fortpflanzung werden darin zum Hauptthema gemacht.",
+          "Die Frau tritt auffallend aktiv, suchend und verlangend auf.",
+          "Historisch wurde das Buch oft allegorisch gelesen.",
+          "In moderner wörtlicher Deutung kann die Liebe selbst Symbol fuer Gottes Beziehungswillen sein."
+        ],
+        correct: [0, 2, 3, 4],
+        explanation: "Gerade das Fehlen von Ehe- und Fortpflanzungszentrierung macht die Pointe des Hohelieds im Skript aus."
+      },
+      {
+        id: "q28",
+        category: "Hohelied",
+        type: "single",
+        prompt: "Welche Aussage fasst die moderne Deutung des Hohelieds im Skript am besten?",
+        help: "Sie geht ueber eine rein allegorische Lesart hinaus.",
+        options: [
+          "Das Buch ist ausschliesslich als Staatspropaganda fuer den Koenig lesbar.",
+          "Die Texte feiern Erotik und Leidenschaft als goettliche Gaben; Liebende koennen selbst Symbol fuer Gottes Beziehungswillen werden.",
+          "Das Buch lehnt jede Koerperlichkeit ab und ist asketisch gemeint.",
+          "Es handelt nur von genealogischer Nachkommenschaft."
+        ],
+        correct: 1,
+        explanation: "Die Zusammenfassung betont eine positive, relationale und theologisch anschlussfaehige Lektuere."
+      },
+      {
+        id: "q29",
+        category: "Pruefungsrahmen",
+        type: "single",
+        prompt: "Wie lange dauert die muendliche Pruefung laut den Notizen?",
+        help: "Dieser Punkt steht im Abschnitt zu den Formalia.",
+        options: [
+          "10 Minuten",
+          "15 Minuten",
+          "20 Minuten",
+          "30 Minuten"
+        ],
+        correct: 2,
+        explanation: "Die Pruefung ist mit 20 Minuten angegeben."
+      },
+      {
+        id: "q30",
+        category: "Pruefungsrahmen",
+        type: "multi",
+        prompt: "Welche Angaben zu den Thesen fuer die muendliche Pruefung sind laut Zusammenfassung richtig?",
+        help: "Mehrere Antworten sind richtig.",
+        options: [
+          "Es muessen 7 Thesen eingereicht werden.",
+          "Eine These besteht aus 2 bis 3 Saetzen.",
+          "Die Thesen werden als PDF mit maximal einer A4-Seite verschickt.",
+          "Die Abgabe erfolgt 24 bis 48 Stunden vor der Pruefung per Mail an Prof. Eder.",
+          "Alle Thesen muessen ausschliesslich Zusatzlektuere behandeln."
+        ],
+        correct: [0, 1, 2, 3],
+        explanation: "Genau diese vier Punkte nennt das Skript. Falsch ist die Behauptung, die Thesen muessten nur Zusatzlektuere behandeln."
+      }
+    ];
+
+    const dom = {
+      quizCard: document.getElementById("quizCard"),
+      resultCard: document.getElementById("resultCard"),
+      questionType: document.getElementById("questionType"),
+      questionCounter: document.getElementById("questionCounter"),
+      questionPrompt: document.getElementById("questionPrompt"),
+      questionHelp: document.getElementById("questionHelp"),
+      questionCategory: document.getElementById("questionCategory"),
+      answerForm: document.getElementById("answerForm"),
+      submitBtn: document.getElementById("submitBtn"),
+      nextBtn: document.getElementById("nextBtn"),
+      feedbackBox: document.getElementById("feedbackBox"),
+      progressBar: document.getElementById("progressBar"),
+      scoreNow: document.getElementById("scoreNow"),
+      heroStats: document.getElementById("heroStats"),
+      resultTitle: document.getElementById("resultTitle"),
+      resultSummary: document.getElementById("resultSummary"),
+      resultScore: document.getElementById("resultScore"),
+      resultCorrectCount: document.getElementById("resultCorrectCount"),
+      resultWrongCount: document.getElementById("resultWrongCount"),
+      resultFocusList: document.getElementById("resultFocusList"),
+      retryWrongBtn: document.getElementById("retryWrongBtn"),
+      restartBtn: document.getElementById("restartBtn"),
+      startFullBtn: document.getElementById("startFullBtn"),
+      startBodyBtn: document.getElementById("startBodyBtn")
+    };
+
+    const state = {
+      questions: [],
+      index: 0,
+      totalPoints: 0,
+      maxPoints: 0,
+      fullyCorrect: 0,
+      wrongQuestionIds: [],
+      answered: false,
+      modeKey: "full",
+      modeLabel: ""
+    };
+
+    function getQuestionPoints(question) {
+      if (question.type === "match") {
+        return question.pairs.length;
+      }
+      return 1;
+    }
+
+    function deepCloneQuestions(questions) {
+      return JSON.parse(JSON.stringify(questions));
+    }
+
+    function shuffle(array) {
+      const copy = array.slice();
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function formatQuestionType(type) {
+      if (type === "single") return "Einzelwahl";
+      if (type === "multi") return "Mehrfachauswahl";
+      return "Zuordnung";
+    }
+
+    function selectedQuestionSet(mode) {
+      if (mode === "body") {
+        return baseQuestions.filter((question) => question.category === "Koerpersymbolik");
+      }
+      return baseQuestions;
+    }
+
+    function startQuiz(mode, questionSubset, customLabel) {
+      const source = questionSubset ? questionSubset : selectedQuestionSet(mode);
+      state.questions = shuffle(deepCloneQuestions(source));
+      state.index = 0;
+      state.totalPoints = 0;
+      state.maxPoints = state.questions.reduce((sum, question) => sum + getQuestionPoints(question), 0);
+      state.fullyCorrect = 0;
+      state.wrongQuestionIds = [];
+      state.answered = false;
+      state.modeKey = mode;
+      state.modeLabel = customLabel ? customLabel : (mode === "body" ? "Koerpersymbolik intensiv" : "Gesamtes Quiz");
+
+      dom.resultCard.classList.remove("visible");
+      dom.quizCard.classList.remove("hidden");
+      dom.scoreNow.textContent = "0";
+      renderQuestion();
+    }
+
+    function renderHeroStats() {
+      const totalQuestions = baseQuestions.length;
+      const bodyQuestions = baseQuestions.filter((question) => question.category === "Koerpersymbolik").length;
+      const singleCount = baseQuestions.filter((question) => question.type === "single").length;
+      const mixedCount = totalQuestions - singleCount;
+
+      dom.heroStats.innerHTML = [
+        `<span class="badge"><strong>${totalQuestions}</strong> Fragen</span>`,
+        `<span class="badge"><strong>${bodyQuestions}</strong> zu Koerpersymbolik</span>`,
+        `<span class="badge"><strong>${mixedCount}</strong> Aufgaben jenseits einfacher Einzelwahl</span>`
+      ].join("");
+    }
+
+    function renderQuestion() {
+      const question = state.questions[state.index];
+      state.answered = false;
+      dom.feedbackBox.className = "feedback";
+      dom.feedbackBox.innerHTML = "";
+      dom.nextBtn.classList.add("hidden");
+      dom.submitBtn.disabled = false;
+
+      const progress = state.questions.length === 0 ? 0 : ((state.index) / state.questions.length) * 100;
+      dom.progressBar.style.width = `${progress}%`;
+      dom.questionType.textContent = formatQuestionType(question.type);
+      dom.questionCounter.textContent = `${state.modeLabel} · Frage ${state.index + 1} von ${state.questions.length}`;
+      dom.questionPrompt.textContent = question.prompt;
+      dom.questionHelp.textContent = question.help;
+      dom.questionCategory.textContent = question.category;
+      dom.answerForm.innerHTML = renderAnswerMarkup(question);
+      dom.scoreNow.textContent = `${state.totalPoints} / ${state.maxPoints}`;
+    }
+
+    function renderAnswerMarkup(question) {
+      if (question.type === "single") {
+        return `<div class="options">${question.options.map((option, index) => `
+          <label class="option">
+            <input type="radio" name="single-answer" value="${index}">
+            <span>
+              <span class="option-title">Option ${index + 1}</span>
+              <span class="option-text">${option}</span>
+            </span>
+          </label>`).join("")}</div>`;
+      }
+
+      if (question.type === "multi") {
+        return `<div class="options">${question.options.map((option, index) => `
+          <label class="option">
+            <input type="checkbox" name="multi-answer" value="${index}">
+            <span>
+              <span class="option-title">Option ${index + 1}</span>
+              <span class="option-text">${option}</span>
+            </span>
+          </label>`).join("")}</div>`;
+      }
+
+      return `
+        <div class="match-grid">
+          ${question.pairs.map((pair, index) => `
+            <div class="match-row">
+              <div class="match-left">${pair.left}</div>
+              <div class="match-arrow">→</div>
+              <div>
+                <label class="hidden" for="match-${index}">${pair.left}</label>
+                <select id="match-${index}" name="match-${index}">
+                  <option value="">Bitte zuordnen</option>
+                  ${question.choices.map((choice) => `<option value="${escapeHtml(choice)}">${choice}</option>`).join("")}
+                </select>
+              </div>
+            </div>`).join("")}
+        </div>`;
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function sameSet(left, right) {
+      if (left.length !== right.length) {
+        return false;
+      }
+      const sortedLeft = left.slice().sort((a, b) => a - b);
+      const sortedRight = right.slice().sort((a, b) => a - b);
+      return sortedLeft.every((value, index) => value === sortedRight[index]);
+    }
+
+    function evaluateCurrentQuestion() {
+      const question = state.questions[state.index];
+      if (question.type === "single") {
+        const checked = dom.answerForm.querySelector("input[name='single-answer']:checked");
+        if (!checked) {
+          return { valid: false, message: "Waehle zuerst eine Antwort aus." };
+        }
+
+        const chosen = Number(checked.value);
+        const isCorrect = chosen === question.correct;
+        return {
+          valid: true,
+          awarded: isCorrect ? 1 : 0,
+          max: 1,
+          fullyCorrect: isCorrect,
+          status: isCorrect ? "correct" : "incorrect",
+          title: isCorrect ? "Treffer" : "Noch nicht ganz",
+          details: isCorrect
+            ? [`Richtig war: ${question.options[question.correct]}`]
+            : [
+                `Deine Wahl: ${question.options[chosen]}`,
+                `Richtig waere: ${question.options[question.correct]}`
+              ],
+          explanation: question.explanation
+        };
+      }
+
+      if (question.type === "multi") {
+        const checked = Array.from(dom.answerForm.querySelectorAll("input[name='multi-answer']:checked"))
+          .map((node) => Number(node.value));
+
+        if (checked.length === 0) {
+          return { valid: false, message: "Markiere mindestens eine Option." };
+        }
+
+        const isCorrect = sameSet(checked, question.correct);
+        const correctTexts = question.correct.map((index) => question.options[index]);
+        const chosenTexts = checked.map((index) => question.options[index]);
+        return {
+          valid: true,
+          awarded: isCorrect ? 1 : 0,
+          max: 1,
+          fullyCorrect: isCorrect,
+          status: isCorrect ? "correct" : "incorrect",
+          title: isCorrect ? "Exakt richtig" : "Die Auswahl war nicht ganz vollstaendig",
+          details: [
+            `Deine Auswahl: ${chosenTexts.join(" | ")}`,
+            `Richtige Auswahl: ${correctTexts.join(" | ")}`
+          ],
+          explanation: question.explanation
+        };
+      }
+
+      const selections = question.pairs.map((pair, index) => ({
+        left: pair.left,
+        chosen: dom.answerForm.querySelector(`#match-${index}`).value,
+        expected: pair.right
+      }));
+
+      const unanswered = selections.some((entry) => entry.chosen === "");
+      if (unanswered) {
+        return { valid: false, message: "Ordne bitte jede Zeile zu, bevor du pruefst." };
+      }
+
+      const awarded = selections.reduce((sum, entry) => sum + (entry.chosen === entry.expected ? 1 : 0), 0);
+      const fullyCorrect = awarded === selections.length;
+      const status = fullyCorrect ? "correct" : awarded > 0 ? "partial" : "incorrect";
+      return {
+        valid: true,
+        awarded,
+        max: selections.length,
+        fullyCorrect,
+        status,
+        title: fullyCorrect ? "Alle Zuordnungen sitzen" : awarded > 0 ? "Teilweise korrekt" : "Diese Zuordnung solltest du noch einmal ansehen",
+        details: selections.map((entry) => {
+          const prefix = entry.chosen === entry.expected ? "Richtig" : "Noch offen";
+          return `${prefix}: ${entry.left} -> ${entry.expected}`;
+        }),
+        explanation: question.explanation
+      };
+    }
+
+    function renderFeedback(result) {
+      dom.feedbackBox.className = `feedback ${result.status}`;
+      dom.feedbackBox.innerHTML = `
+        <h3>${result.title}</h3>
+        <p class="feedback-note">${result.explanation}</p>
+        <ul>${result.details.map((detail) => `<li>${detail}</li>`).join("")}</ul>
+        <p class="feedback-note" style="margin-top: 12px;">Punkte fuer diese Aufgabe: ${result.awarded} / ${result.max}</p>
+      `;
+    }
+
+    function finishQuiz() {
+      dom.quizCard.classList.add("hidden");
+      dom.resultCard.classList.add("visible");
+
+      const percent = state.maxPoints === 0 ? 0 : Math.round((state.totalPoints / state.maxPoints) * 100);
+      dom.resultTitle.textContent = `${state.modeLabel} abgeschlossen`;
+      dom.resultSummary.textContent = `Du hast ${percent}% der moeglichen Punkte erreicht. Besonders wertvoll ist jetzt der zweite Blick auf die Themen, in denen die falschen oder nur teilweise richtigen Antworten lagen.`;
+      dom.resultScore.textContent = `${state.totalPoints} / ${state.maxPoints}`;
+      dom.resultCorrectCount.textContent = `${state.fullyCorrect}`;
+      dom.resultWrongCount.textContent = `${state.wrongQuestionIds.length}`;
+
+      const wrongQuestions = state.questions.filter((question) => state.wrongQuestionIds.includes(question.id));
+      if (wrongQuestions.length > 0) {
+        dom.resultFocusList.innerHTML = wrongQuestions.map((question) => `<li><strong>${question.category}:</strong> ${question.prompt}</li>`).join("");
+        dom.retryWrongBtn.disabled = false;
+      } else {
+        dom.resultFocusList.innerHTML = `<li>Kein akuter Wiederholungsblock: Du hast alle Fragen voll korrekt geloest.</li>`;
+        dom.retryWrongBtn.disabled = true;
+      }
+    }
+
+    dom.submitBtn.addEventListener("click", () => {
+      if (state.answered) {
+        return;
+      }
+
+      const result = evaluateCurrentQuestion();
+      if (!result.valid) {
+        dom.feedbackBox.className = "feedback incorrect";
+        dom.feedbackBox.innerHTML = `<h3>Noch fehlt etwas</h3><p class="feedback-note">${result.message}</p>`;
+        return;
+      }
+
+      state.answered = true;
+      state.totalPoints += result.awarded;
+      dom.scoreNow.textContent = `${state.totalPoints} / ${state.maxPoints}`;
+      if (result.fullyCorrect) {
+        state.fullyCorrect += 1;
+      } else {
+        state.wrongQuestionIds.push(state.questions[state.index].id);
+      }
+
+      renderFeedback(result);
+      dom.submitBtn.disabled = true;
+      dom.nextBtn.classList.remove("hidden");
+      dom.progressBar.style.width = `${((state.index + 1) / state.questions.length) * 100}%`;
+    });
+
+    dom.nextBtn.addEventListener("click", () => {
+      state.index += 1;
+      if (state.index >= state.questions.length) {
+        finishQuiz();
+        return;
+      }
+      renderQuestion();
+    });
+
+    dom.startFullBtn.addEventListener("click", () => startQuiz("full"));
+    dom.startBodyBtn.addEventListener("click", () => startQuiz("body"));
+    dom.restartBtn.addEventListener("click", () => startQuiz(state.modeKey));
+    dom.retryWrongBtn.addEventListener("click", () => {
+      const subset = baseQuestions.filter((question) => state.wrongQuestionIds.includes(question.id));
+      if (subset.length > 0) {
+        startQuiz(state.modeKey, subset, "Wiederholung der falschen Fragen");
+      }
+    });
+
+    renderHeroStats();
+  </script>
+</body>
+</html>
