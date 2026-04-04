@@ -1,5 +1,8 @@
 {
-    "chat.tools.terminal.autoApprove": {
-        "markitdown": true
-    }
+  "chat.tools.terminal.autoApprove": {
+    "markitdown": true
+  },
+  "notebook.markup.fontSize": 40,
+  "markdown.preview.fontSize": 38,
+  "pmtoolkit.editorFontSize": 24
 }
